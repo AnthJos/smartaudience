@@ -10,24 +10,29 @@ String workshopRegisterModelToJson(WorkshopRegisterModel data) => json.encode(da
 
 class WorkshopRegisterModel {
 
-    String id;
+    String tok;
+    String iduser;
     String fechaini;
     String fechafin;
 
     WorkshopRegisterModel({
-        this.id,
+      
+        this.tok,
+        this.iduser,
         this.fechaini = '',
         this.fechafin = '',
     });
 
     factory WorkshopRegisterModel.fromJson(Map<String, dynamic> json) => new WorkshopRegisterModel(
-        id         : json["id"],
+      
+        tok        : json["tok"],
+        iduser         : json["iduser"],
         fechaini     : json["fechaini"],
         fechafin      : json["fechafin"],
     );
 
     Map<String, dynamic> toJson() => {
-        //"id"         : id,
+        "iduser"         : iduser,
         "fechaini"     : fechaini,
         "fechafin"     : fechafin
     };

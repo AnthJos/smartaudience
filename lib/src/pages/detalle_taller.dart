@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:share/share.dart';
 import 'package:smartaudience/src/model/workshop_model.dart';
 import 'package:smartaudience/src/model/workshop_registro_model.dart';
+import 'package:smartaudience/src/preferences/preferences_usuario.dart';
 import 'package:smartaudience/src/provider/workshop_registro.dart';
 import 'package:smartaudience/src/utils/utils.dart';
 
@@ -17,10 +18,11 @@ class _DetalleTallerState extends State<DetalleTaller> {
   final cantidadregistro = new WorkshopRegistro();
   WorkshopModel workshop = new WorkshopModel();
   WorkshopRegisterModel workregistro = new WorkshopRegisterModel();
+  final _prefs = PreferenciasUsuario();
 
   @override
   Widget build(BuildContext context) {
-
+    
     final WorkshopModel prodData = ModalRoute.of(context).settings.arguments;
     if( prodData != null ){
       workshop =  prodData;
@@ -142,15 +144,43 @@ class _DetalleTallerState extends State<DetalleTaller> {
                   ),
                 ),
                 Center(
-                  child: RaisedButton(
-                    padding: EdgeInsets.symmetric(horizontal: 60.0),
-                    child: Text('Registrarse'),
-                    onPressed: () async{
-                      cantidadTaller = await cantidadregistro.obtener();
-                      verificarCupos(context);
+                  child: FutureBuilder(
+                    future: cantidadregistro.verificarTaller(),
+                    builder: (c, snapshot){
+
+                      final data = snapshot.data;
+                      print(data);
+                      if( data != null && data == _prefs.idUser){
+                        return RaisedButton(
+                          padding: EdgeInsets.symmetric(horizontal: 60.0),
+                          child: Text('Registrarse'),
+                          onPressed: null,
+                          color: Color.fromRGBO(247, 146, 30, 1),
+                          textColor: Colors.white,
+                        );
+                      }else if ( data != null && data != _prefs.idUser ){
+                        return RaisedButton(
+                          padding: EdgeInsets.symmetric(horizontal: 60.0),
+                          child: Text('Registrarse'),
+                          onPressed: () async{
+                            cantidadTaller = await cantidadregistro.obtener();
+                            verificarCupos(context);
+                          },
+                          color: Color.fromRGBO(247, 146, 30, 1),
+                          textColor: Colors.white,
+                        );
+                      }else{
+                        return RaisedButton(
+                          padding: EdgeInsets.symmetric(horizontal: 60.0),
+                          child: Text('Registrarse'),
+                          onPressed: null,
+                          color: Color.fromRGBO(247, 146, 30, 1),
+                          textColor: Colors.white,
+                        );
+                      }
+                      
+
                     },
-                    color: Color.fromRGBO(247, 146, 30, 1),
-                    textColor: Colors.white,
                   ),
                 )
               ],
@@ -167,7 +197,7 @@ class _DetalleTallerState extends State<DetalleTaller> {
     int totalTaller = 30;
     int quedaTaller = totalTaller - cantidadTaller;
 
-    if( quedaTaller == totalTaller){
+    if( quedaTaller == 0){
       showDialog(
         context: context,
         builder: ( context ){
@@ -195,6 +225,7 @@ class _DetalleTallerState extends State<DetalleTaller> {
                 child: Text('Aceptar'),
                 onPressed: ()async{
                   workregistro.fechaini = DateTime.now().toString();
+                  workregistro.iduser = _prefs.idUser;
                   await cantidadregistro.registrarTaller(workregistro);
                   Navigator.of(context).pop();
                   Navigator.pushNamed(context, 'registradoPage');
