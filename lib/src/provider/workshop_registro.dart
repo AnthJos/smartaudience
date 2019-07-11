@@ -9,6 +9,7 @@ class WorkshopRegistro{
   final String _url = 'https://smart-audience-6a6e1.firebaseio.com';
   final _prefs = new PreferenciasUsuario();
 
+
   Future<bool> registrarTaller( WorkshopRegisterModel registrotaller ) async {
     final url = '$_url/workshopregistro/${ _prefs.idCareer }/${ _prefs.idTaller }.json?auth=${ _prefs.token }';
     final resp = await http.post( url, body: workshopRegisterModelToJson(registrotaller), );

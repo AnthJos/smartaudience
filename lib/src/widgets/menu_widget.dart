@@ -225,6 +225,7 @@ Widget _mostrarFoto( Map data ){
 
       if( futureString != null){
 
+        _prefs.idTaller = futureString;
         /*final scan = ScanModel(valor: futureString);
         scanBloc.agregarScan(scan);
 
@@ -236,7 +237,7 @@ Widget _mostrarFoto( Map data ){
           utils.abrirScan(context, scan);
         }*/
 
-        //print('--'+futureString);
+        print('--'+futureString);
         Navigator.pushNamed(context, 'verificarRegistro');
         
       }
