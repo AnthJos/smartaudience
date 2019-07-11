@@ -64,6 +64,21 @@ class PreferenciasUsuario {
     _prefs.setString('idTaller', value);
   }
 
+  // Get y Set del password del usuario
+  get idregistroConferencia {
+    return _prefs.getString('idregistro') ?? '';
+  }
+  set idregistroConferencia( String value ){
+    _prefs.setString('idregistro', value);
+  }
+  // Get y Set del password del usuario
+  get fechainiConferencia {
+    return _prefs.getString('fechaini') ?? '';
+  }
+  set fechainiConferencia( String value ){
+    _prefs.setString('fechaini', value);
+  }
+
   // GET y SET de la última página
   get ultimaPagina {
     return _prefs.getString('ultimaPagina') ?? 'login';

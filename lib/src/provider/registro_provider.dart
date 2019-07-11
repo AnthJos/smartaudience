@@ -41,9 +41,13 @@ class RegistroConferenceBeacon{
       print(registros[i].fechaini);
       if(registros[i].id == _prefs.idUser && registros[i].fechafin == ""){
         respuesta = 1;
+        _prefs.idregistroConferencia = registros[i].tok;
+        _prefs.fechainiConferencia = registros[i].fechaini;
         break;
       }else if(registros[i].id == _prefs.idUser && registros[i].fechafin != ""){
         respuesta = 2;
+        _prefs.idregistroConferencia = registros[i].tok;
+        _prefs.fechainiConferencia = registros[i].fechaini;
         break;
       }else{
         respuesta = 0;
@@ -51,6 +55,16 @@ class RegistroConferenceBeacon{
     }
 
     return respuesta;
+
+  }
+
+  Future<bool> registrarSalida( BeaconModel beaconConference ) async {
+
+    final url = '$_url/conferenceregistro/${ _prefs.idCareer }/conference1/${ _prefs.idregistroConferencia }.json?auth=${ _prefs.token }';
+    final resp = await http.put(url, body: beaconModelToJson(beaconConference));
+    final decodedData = json.decode(resp.body);
+
+    return true;
 
   }
 

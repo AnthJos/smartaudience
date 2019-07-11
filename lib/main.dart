@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smartaudience/src/bloc/provider.dart';
 import 'package:smartaudience/src/pages/beacon_page.dart';
+import 'package:smartaudience/src/pages/conferencia_close.dart';
 import 'package:smartaudience/src/pages/datos_page.dart';
 import 'package:smartaudience/src/pages/detalle_conferencia.dart';
 import 'package:smartaudience/src/pages/detalle_taller.dart';
@@ -52,7 +53,8 @@ class MyApp extends StatelessWidget {
           'registroBeacon'    : ( BuildContext context ) => RegistroBeacon(),
           'sesionClose'       : ( BuildContext context ) => SsesionClose(),
           'documento'         : ( BuildContext context ) => DocumentPage(),
-          'quest'             : ( BuildContext context ) => QuestPage()
+          'quest'             : ( BuildContext context ) => QuestPage(),
+          'registroSalida'    : ( BuildContext context ) => RegistroSalidaConferencia()
         },
       ),
     );

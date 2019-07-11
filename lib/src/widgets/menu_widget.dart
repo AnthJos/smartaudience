@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:qrcode_reader/qrcode_reader.dart';
 
 import 'package:smartaudience/src/bloc/provider.dart';
+import 'package:smartaudience/src/model/beacon_model.dart';
+import 'package:smartaudience/src/preferences/preferences_usuario.dart';
 import 'package:smartaudience/src/provider/conference_provider.dart';
 import 'package:smartaudience/src/provider/registro_provider.dart';
+import 'package:smartaudience/src/utils/utils.dart';
 
 
 
@@ -18,6 +21,8 @@ class _MenuWidgetState extends State<MenuWidget> {
 
     final registroProvider = RegistroConferenceBeacon();
     final conferenceProvider = ConferenceProvider();
+    final _prefs = PreferenciasUsuario();
+    BeaconModel beaconRegistro = BeaconModel();
     int checkin;
 
   @override
@@ -109,9 +114,16 @@ class _MenuWidgetState extends State<MenuWidget> {
           return ListTile(
             leading: Icon(Icons.radio_button_unchecked, color: Color.fromRGBO(247, 146, 30, 1),),
             title: Text('Check Out'),
-            onTap: (){
-              Navigator.pop(context);
-              //Navigator.pushReplacementNamed(context, SettingsPage.routename);
+            onTap: () async {
+              mostrarConectado(context);
+              beaconRegistro.fechafin = DateTime.now().toString();
+              beaconRegistro.fechaini = _prefs.fechainiConferencia;
+              beaconRegistro.id = _prefs.idUser;
+              await registroProvider.registrarSalida(beaconRegistro);
+              Future.delayed(Duration(milliseconds: 2000), (){
+                Navigator.pop(context);
+                Navigator.pushReplacementNamed(context, 'registroSalida');
+              });
             },
           );
         }else if(checkin == 0){
@@ -120,7 +132,7 @@ class _MenuWidgetState extends State<MenuWidget> {
             title: Text('Check In'),
             onTap: (){
               Navigator.pop(context);
-              //Navigator.pushReplacementNamed(context, SettingsPage.routename);
+              Navigator.pushReplacementNamed(context, 'beaconPage');
             },
           );
         }else{

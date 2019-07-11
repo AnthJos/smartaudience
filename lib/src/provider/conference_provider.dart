@@ -47,12 +47,6 @@ class ConferenceProvider{
 
   }
 
-  Future<bool> registrarSalida() async {
-
-    return true;
-
-  }
-
  
 
 }
